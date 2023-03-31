@@ -40,7 +40,7 @@ class KrbKeysBs:
 
         logging.info(f"Creating keytab for {op}")
         kt = self.kadm.create_keytab([op])
-        self.k8s.update_secret(ns=self.namespace, key=self.keytabs, name=self.ktname, value=kt)
+        self.k8s.update_secret(ns=self.namespace, key=self.ktname, name=self.keytabs, value=kt)
 
     def run(self):
         for s in self.secrets:
