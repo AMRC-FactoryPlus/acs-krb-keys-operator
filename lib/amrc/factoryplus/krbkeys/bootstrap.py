@@ -32,7 +32,7 @@ class KrbKeysBs:
 
     def ensure_keytab(self):
         op = self.principal
-        kt = self.k8s.read_secret(key=self.keytabs, name=self.ktname, ns=self.namespace)
+        kt = self.k8s.read_secret(ns=self.namespace, name=self.keytabs, key=self.ktname)
 
         if self.kadm.princ_in_keytab(op, kt):
             logging.info(f"Keytab for {op} already exists.")
@@ -40,7 +40,7 @@ class KrbKeysBs:
 
         logging.info(f"Creating keytab for {op}")
         kt = self.kadm.create_keytab([op])
-        self.k8s.update_secret(ns=self.namespace, key=self.keytabs, name=self.ktname, value=kt)
+        self.k8s.update_secret(ns=self.namespace, name=self.keytabs, key=self.ktname, value=kt)
 
     def run(self):
         for s in self.secrets:
